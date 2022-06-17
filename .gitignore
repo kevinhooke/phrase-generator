@@ -1,0 +1,7 @@
+.DS_Store
+.classpath
+.project
+.settings
+dict/
+target/
+wn3.1.dict.tar.gz
