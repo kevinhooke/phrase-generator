@@ -11,10 +11,38 @@ public class PhraseGenerator {
 	public static void main(String[] args) throws Exception{
 		PhraseGenerator generator = new PhraseGenerator();
 		
-		String word1 = generator.getRandomWordFromFile("./noun.person.parsed.txt");
+		String personNoun = generator.getRandomWordFromFile("./noun.person.parsed.txt");
+		String verb = generator.getRandomWordFromFile("./verb.change.parsed.txt");
+		String noun2 = generator.getRandomWordFromFile("./noun.person.parsed.txt");
+		String adjective = generator.getRandomWordFromFile("./adj.all.parsed.txt");
+		String pp = generator.formPresentParticiple(verb);
 		
-		System.out.println(word1);
+		String articlePlusAdjective = generator.addArticle(adjective);
+		
+		System.out.format("%s %s %s %s", personNoun, pp, articlePlusAdjective, noun2);
 
+	}
+
+	/**
+	 * Adds article 'a' or 'an' to noun depending whether it starts with a
+	 * vowel or consonant.
+	 * 
+	 * @param noun
+	 * @return
+	 */
+	private String addArticle(String noun) {
+		String result = null;
+		
+		if(noun.toLowerCase().startsWith("a") 
+			|| noun.toLowerCase().startsWith("e")
+			|| noun.toLowerCase().startsWith("i")
+			|| noun.toLowerCase().startsWith("u")){
+			result = "an " + noun;
+		}
+		else {
+			result = "a " + noun;
+		}
+		return result;
 	}
 
 	String getRandomWordFromFile(String filename) throws Exception{
@@ -30,7 +58,20 @@ public class PhraseGenerator {
 		int randomWord = (new Random()).nextInt(wordsInFile);
 		word = words.get(randomWord);
 		
+		word = word.replaceAll("_", " ");
+		
 		reader.close();
 		return word;
+	}
+	
+	String formPresentParticiple(String verb) {
+		String result = null;
+		if(verb.endsWith("e")) {
+			result = verb.substring(0, verb.length() -1) + "ing";
+		}
+		else {
+			result = verb + "ing";
+		}
+		return result;
 	}
 }
